@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.body {
+  display: flex;
+  width: 100%;
+}
+.mainDiv {
+  width: 100%;
+}
+@media (max-width: 700px) {
+  .body {
+    flex-direction: column;
+  }
+  .header {
+    width: 85%;
+  }
+}

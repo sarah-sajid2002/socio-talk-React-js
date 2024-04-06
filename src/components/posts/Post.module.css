@@ -1,0 +1,38 @@
+.tagBadges{
+  margin: 0px 3px;
+}
+.tagDiv{
+    height: 50px;
+}
+.reactionsDiv{
+ background-color: rgb(230, 230, 230);
+ border-radius: 10px;
+ padding: 10px ;
+ height: 40px;
+ margin: 10px 0px;
+}
+.reactionsDiv:hover{
+  cursor: pointer;
+}
+.cardTitle{
+  height: 30px;
+  text-align: center;
+}
+.cardText{
+    height: 50px;
+    overflow-y: scroll;
+}
+
+/* Change the color of the scrollbar to blue */
+.cardText::-webkit-scrollbar {
+  width: 6px; /* Set width of the scrollbar */
+}
+
+.cardText::-webkit-scrollbar-thumb {
+  background-color: rgb(188, 188, 255); /* Set color of the scrollbar thumb */
+  border-radius: 4px; /* Set border radius of the scrollbar thumb */
+}
+.deleteOption:hover {
+  cursor: pointer;
+  
+}
