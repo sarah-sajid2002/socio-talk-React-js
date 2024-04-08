@@ -2,7 +2,7 @@
   margin: 0px 3px;
 }
 .tagDiv{
-    height: 50px;
+    height: 40px;
 }
 .reactionsDiv{
  background-color: rgb(230, 230, 230);
@@ -15,11 +15,11 @@
   cursor: pointer;
 }
 .cardTitle{
-  height: 30px;
+  height: 50px;
   text-align: center;
 }
 .cardText{
-    height: 50px;
+    height: 100px;
     overflow-y: scroll;
 }
 

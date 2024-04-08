@@ -3,7 +3,7 @@ export const storeItems = createContext({
   postListData: [],
   addPost: () => {},
   deletePost: () => {},
-  increaseReactions: () => {},
+  addFecthPosts: () => {},
 });
 
 function reducer(prevList, action) {
@@ -15,11 +15,13 @@ function reducer(prevList, action) {
       });
       break;
     case "ADD_POST":
-      if (action.payload.title && action.payload.description) {
+      if (action.payload.title && action.payload.body) {
         newArr = [action.payload, ...prevList];
         break;
       }
-
+    case "ADD_FETCH_POSTS":
+      newArr = action.posts;
+      break;
     default:
       newArr = prevList;
   }
@@ -28,16 +30,15 @@ function reducer(prevList, action) {
 
 function postListDataStore({ children }) {
   const [postListData, dispatchpostListData] = useReducer(reducer, []);
-  const [reactState, setReactState] = useState(0);
-  function addPost(e, title, description, tags) {
+  function addPost(e, title, body, tags) {
     e.preventDefault();
     dispatchpostListData({
       type: "ADD_POST",
       payload: {
         id: Date.now(),
         title,
-        description,
-        noOfReactions: reactState,
+        body,
+        reactions: 0,
         user: "user - 09",
         tags,
       },
@@ -50,8 +51,11 @@ function postListDataStore({ children }) {
     });
   }
 
-  function increaseReactions() {
-    setReactState(reactState + 1);
+  function addFecthPosts(posts) {
+    dispatchpostListData({
+      type: "ADD_FETCH_POSTS",
+      posts,
+    });
   }
 
   return (
@@ -60,9 +64,7 @@ function postListDataStore({ children }) {
         postListData,
         addPost,
         deletePost,
-        increaseReactions,
-        reactState,
-        setReactState,
+        addFecthPosts,
       }}
     >
       {children}

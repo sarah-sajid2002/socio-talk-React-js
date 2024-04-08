@@ -10,7 +10,7 @@ import styles from "./Post.module.css";
 import { storeItems } from "../../store/PostListStore";
 
 function Post({ post }) {
-  const { deletePost, setReactState, reactState } = useContext(storeItems);
+  const { deletePost } = useContext(storeItems);
 
   return (
     <>
@@ -20,9 +20,9 @@ function Post({ post }) {
         </span>
 
         <div className="card-body">
-          <h5 className={styles.cardTitle}>{post.title}</h5>
+          <h6 className={styles.cardTitle}>{post.title}</h6>
 
-          <p className={styles.cardText}>{post.description}</p>
+          <p className={styles.cardText}>{post.body}</p>
           <div className={styles.tagDiv}>
             {post.tags.map((tagValus, index) => (
               <span
@@ -34,15 +34,12 @@ function Post({ post }) {
             ))}
           </div>
 
-          <div
-            className={styles.reactionsDiv}
-            onClick={() => setReactState(reactState + 1)}
-          >
+          <div className={styles.reactionsDiv}>
             <FaRegThumbsUp />
             <FaLaugh />
             <FaRegSadTear />
             <FaHeart />
-            <span className="rounded  my-2 mx-2">{post.noOfReactions}</span>
+            <span className="rounded  my-2 mx-2">{post.reactions}</span>
           </div>
         </div>
       </div>

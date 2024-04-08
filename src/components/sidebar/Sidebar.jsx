@@ -1,12 +1,11 @@
 import styles from "../sidebar/Sidebar.module.css";
 
-
 function Sidebar({ selectedTab, setSelectedTab }) {
   return (
     <>
       <div
         className={`${styles.sidebar}  d-flex flex-column flex-shrink-0 p-3 text-bg-dark`}
-        style={{ width: 180 }}
+        style={{ width: 280 }}
       >
         <a
           href="/"
@@ -15,7 +14,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
           <svg className="bi pe-none me-2" width={40} height={32}>
             <use xlinkHref="#bootstrap" />
           </svg>
-          <span className="fs-4">Socio Talk</span>
+          <span className="fs-4">React Post Hub</span>
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
