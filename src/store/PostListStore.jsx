@@ -1,11 +1,11 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useEffect, useReducer } from "react";
 export const storeItems = createContext({
   postListData: [],
   addPost: () => {},
   deletePost: () => {},
   addFecthPosts: () => {},
 });
-
+// ======reducer========
 function reducer(prevList, action) {
   let newArr;
   switch (action.type) {
@@ -27,8 +27,11 @@ function reducer(prevList, action) {
   }
   return newArr;
 }
-
+// ======main work=========
 function postListDataStore({ children }) {
+  // useEffect
+
+  // handling reducer state
   const [postListData, dispatchpostListData] = useReducer(reducer, []);
   function addPost(e, title, body, tags) {
     e.preventDefault();
@@ -52,10 +55,7 @@ function postListDataStore({ children }) {
   }
 
   function addFecthPosts(posts) {
-    dispatchpostListData({
-      type: "ADD_FETCH_POSTS",
-      posts,
-    });
+    dispatchpostListData({ type: "ADD_FETCH_POSTS", posts });
   }
 
   return (

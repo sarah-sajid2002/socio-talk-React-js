@@ -33,7 +33,7 @@ function CreatePost() {
       e,
       titleValue.current.value,
       decriptionValue.current.value,
-      selectedTags
+      selectedTags,
     );
     titleValue.current.value = "";
     decriptionValue.current.value = "";

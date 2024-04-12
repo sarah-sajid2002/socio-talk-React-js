@@ -10,7 +10,10 @@ import styles from "./Post.module.css";
 import { storeItems } from "../../store/PostListStore";
 
 function Post({ post }) {
-  const { deletePost } = useContext(storeItems);
+  const { deletePost } =
+    useContext(storeItems);
+
+ 
 
   return (
     <>
@@ -34,7 +37,10 @@ function Post({ post }) {
             ))}
           </div>
 
-          <div className={styles.reactionsDiv}>
+          <div
+            className={styles.reactionsDiv}
+           
+          >
             <FaRegThumbsUp />
             <FaLaugh />
             <FaRegSadTear />
