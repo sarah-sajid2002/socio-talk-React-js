@@ -5,7 +5,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
     <>
       <div
         className={`${styles.sidebar}  d-flex flex-column flex-shrink-0 p-3 text-bg-dark`}
-        style={{ width: 280 }}
+        style={{ width: 200 }}
       >
         <a
           href="/"

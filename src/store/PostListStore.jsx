@@ -1,9 +1,9 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useReducer, useState, useEffect } from "react";
 export const storeItems = createContext({
   postListData: [],
   addPost: () => {},
   deletePost: () => {},
-  addFecthPosts: () => {},
+  loading: false,
 });
 // ======reducer========
 function reducer(prevList, action) {
@@ -15,10 +15,8 @@ function reducer(prevList, action) {
       });
       break;
     case "ADD_POST":
-      if (action.payload.title && action.payload.body) {
-        newArr = [action.payload, ...prevList];
-        break;
-      }
+      newArr = [action.payload, ...prevList];
+      break;
     case "ADD_FETCH_POSTS":
       newArr = action.posts;
       break;
@@ -30,21 +28,15 @@ function reducer(prevList, action) {
 // ======main work=========
 function postListDataStore({ children }) {
   // useEffect
+  const [loading, setLoading] = useState(false);
 
   // handling reducer state
   const [postListData, dispatchpostListData] = useReducer(reducer, []);
-  function addPost(e, title, body, tags) {
+  function addPost(e, post) {
     e.preventDefault();
     dispatchpostListData({
       type: "ADD_POST",
-      payload: {
-        id: Date.now(),
-        title,
-        body,
-        reactions: 0,
-        user: "user - 09",
-        tags,
-      },
+      payload: post,
     });
   }
   function deletePost(id) {
@@ -53,22 +45,37 @@ function postListDataStore({ children }) {
       index: id,
     });
   }
-
   function addFecthPosts(posts) {
     dispatchpostListData({ type: "ADD_FETCH_POSTS", posts });
   }
-
+  useEffect(() => {
+    setLoading(true);
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetch("https://dummyjson.com/posts", { signal })
+      .then((res) => res.json())
+      .then((obj) => {
+        addFecthPosts(obj.posts);
+        setLoading(false);
+      });
+    return () => {
+      console.log("clean up function for fetching data from server");
+      controller.abort();
+    };
+  }, []);
   return (
-    <storeItems.Provider
-      value={{
-        postListData,
-        addPost,
-        deletePost,
-        addFecthPosts,
-      }}
-    >
-      {children}
-    </storeItems.Provider>
+    <>
+      <storeItems.Provider
+        value={{
+          postListData,
+          addPost,
+          deletePost,
+          loading,
+        }}
+      >
+        {children}
+      </storeItems.Provider>
+    </>
   );
 }
 

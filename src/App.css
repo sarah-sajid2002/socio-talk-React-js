@@ -18,16 +18,7 @@
     width: 85%;
   }
 }
-.welcomeMessage{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: 100px 250px;
-  text-align: center;
+.welcomeMessage {
+  margin: 100px 370px;
   color: grey;
-}
-.welcomeMessage button{
-  width: 40%;
-  margin: 0px 150px;
-  background-color: blue;
 }

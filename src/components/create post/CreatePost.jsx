@@ -18,6 +18,8 @@ const tagArr = [
 function CreatePost() {
   const titleValue = useRef("");
   const decriptionValue = useRef("");
+  const reactionValue = useRef(0);
+  const userIdValue = useRef(0);
   const [selectedTags, setSelectedTags] = useState([]);
   const { addPost } = useContext(storeItems);
   const handleCheckboxChange = (e) => {
@@ -29,20 +31,39 @@ function CreatePost() {
     }
   };
   const handleSubmit = (e) => {
-    addPost(
-      e,
-      titleValue.current.value,
-      decriptionValue.current.value,
-      selectedTags,
-    );
-    titleValue.current.value = "";
-    decriptionValue.current.value = "";
+    fetch("https://dummyjson.com/posts/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: titleValue.current.value,
+        body: decriptionValue.current.value,
+        userId: userIdValue.current.value,
+        tags: selectedTags,
+        reactions: reactionValue.current.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((obj) => addPost(e, obj));
   };
 
   return (
     <>
       <div className={Styles.createPost}>
         <h1 className={Styles.heading}>Create Post</h1>
+        <div className="row mb-3">
+          <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+            user Id
+          </label>
+          <div className="col-sm-10">
+            <input
+              ref={userIdValue}
+              type="number"
+              className="form-control"
+              id="inputEmail3"
+              placeholder="Enter user Id"
+            />
+          </div>
+        </div>
         <div className="row mb-3">
           <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
             Title
@@ -67,6 +88,20 @@ function CreatePost() {
               className="form-control"
               id="inputPassword3"
               placeholder="Description..."
+            />
+          </div>
+        </div>
+        <div className="row mb-3">
+          <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
+            reactions
+          </label>
+          <div className="col-sm-10">
+            <input
+              ref={reactionValue}
+              type="number"
+              placeholder="enter reactions"
+              className="form-control"
+              id="inputPassword3"
             />
           </div>
         </div>

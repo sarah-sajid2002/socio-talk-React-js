@@ -1,25 +1,20 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Post from "./Post";
 import styles from "./PostList.module.css";
 import { storeItems } from "../../store/PostListStore";
 import WelcomeMessage from "./WelcomeMessage";
+import Loader from "../loader/Loader";
 function PostList() {
-  const { postListData, addFecthPosts } = useContext(storeItems);
-  useEffect(() => {
-    fetch("https://dummyjson.com/posts")
-      .then((res) => res.json())
-      .then((obj) => addFecthPosts(obj.posts));
-  }, []);
+  const { postListData, loading } = useContext(storeItems);
 
   return (
     <>
+      {loading && <Loader />}
       <h1 className={styles.heading}>Posts</h1>
       <div className={styles.postsDiv}>
-        {postListData.length === 0 ? (
-          <WelcomeMessage />
-        ) : (
-          postListData.map((value, index) => <Post key={index} post={value} />)
-        )}
+        {!loading && postListData.length === 0 && <WelcomeMessage />}
+        {!loading &&
+          postListData.map((value, index) => <Post key={index} post={value} />)}
       </div>
     </>
   );
