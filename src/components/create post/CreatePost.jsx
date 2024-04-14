@@ -1,54 +1,12 @@
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import Styles from "./CreatePost.module.css";
 import { storeItems } from "../../store/PostListStore";
-
-const tagArr = [
-  "study",
-  "traveling",
-  "dinner",
-  "unbelievable",
-  "happy",
-  "sad",
-  "excited",
-  "music",
-  "sports",
-  "movies",
-];
-
+import { Form, redirect } from "react-router-dom";
 function CreatePost() {
-  const titleValue = useRef("");
-  const decriptionValue = useRef("");
-  const reactionValue = useRef(0);
-  const userIdValue = useRef(0);
-  const [selectedTags, setSelectedTags] = useState([]);
   const { addPost } = useContext(storeItems);
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setSelectedTags((prevTags) => [...prevTags, value]);
-    } else {
-      setSelectedTags((prevTags) => prevTags.filter((tag) => tag !== value));
-    }
-  };
-  const handleSubmit = (e) => {
-    fetch("https://dummyjson.com/posts/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: titleValue.current.value,
-        body: decriptionValue.current.value,
-        userId: userIdValue.current.value,
-        tags: selectedTags,
-        reactions: reactionValue.current.value,
-      }),
-    })
-      .then((res) => res.json())
-      .then((obj) => addPost(e, obj));
-  };
-
   return (
     <>
-      <div className={Styles.createPost}>
+      <Form method="POST" className={Styles.createPost}>
         <h1 className={Styles.heading}>Create Post</h1>
         <div className="row mb-3">
           <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
@@ -56,7 +14,7 @@ function CreatePost() {
           </label>
           <div className="col-sm-10">
             <input
-              ref={userIdValue}
+              name="userId"
               type="number"
               className="form-control"
               id="inputEmail3"
@@ -70,7 +28,7 @@ function CreatePost() {
           </label>
           <div className="col-sm-10">
             <input
-              ref={titleValue}
+              name="title"
               type="text"
               className="form-control"
               id="inputEmail3"
@@ -84,7 +42,7 @@ function CreatePost() {
           </label>
           <div className="col-sm-10">
             <textarea
-              ref={decriptionValue}
+              name="body"
               className="form-control"
               id="inputPassword3"
               placeholder="Description..."
@@ -97,40 +55,48 @@ function CreatePost() {
           </label>
           <div className="col-sm-10">
             <input
-              ref={reactionValue}
               type="number"
+              name="reactions"
               placeholder="enter reactions"
               className="form-control"
               id="inputPassword3"
             />
           </div>
         </div>
-        <div className={Styles.tagsForm}>
-          <h6>Choose Tag:</h6>
-          {tagArr.map((tag, index) => (
-            <div key={index}>
-              <input
-                type="checkbox"
-                id={tag}
-                name={tag}
-                value={tag}
-                onChange={handleCheckboxChange}
-                checked={selectedTags.includes(tag)}
-              />
-              <label htmlFor={tag}>{tag}</label>
-            </div>
-          ))}
+        <div className="row mb-3">
+          <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
+            Tags
+          </label>
+          <div className="col-sm-10">
+            <input
+              type="text  "
+              name="tags"
+              placeholder="enter Tags"
+              className="form-control"
+              id="inputPassword3"
+            />
+          </div>
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={(e) => handleSubmit(e)}
-        >
+        <button type="submit" className="btn btn-primary">
           Done ✔
         </button>
-      </div>
+      </Form>
     </>
   );
 }
-
+export const formSubmitRouter = async (data) => {
+  const formData = await data.request.formData();
+  const postData = Object.fromEntries(formData);
+  postData.tags = postData.tags.split(" ");
+  fetch("https://dummyjson.com/posts/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(postData),
+  })
+    .then((res) => res.json())
+    .then((obj) => {
+      addPost(obj);
+    });
+  return redirect("/");
+};
 export default CreatePost;

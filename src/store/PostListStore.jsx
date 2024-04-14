@@ -3,7 +3,6 @@ export const storeItems = createContext({
   postListData: [],
   addPost: () => {},
   deletePost: () => {},
-  loading: false,
 });
 // ======reducer========
 function reducer(prevList, action) {
@@ -28,7 +27,6 @@ function reducer(prevList, action) {
 // ======main work=========
 function postListDataStore({ children }) {
   // useEffect
-  const [loading, setLoading] = useState(false);
 
   // handling reducer state
   const [postListData, dispatchpostListData] = useReducer(reducer, []);
@@ -48,21 +46,7 @@ function postListDataStore({ children }) {
   function addFecthPosts(posts) {
     dispatchpostListData({ type: "ADD_FETCH_POSTS", posts });
   }
-  useEffect(() => {
-    setLoading(true);
-    const controller = new AbortController();
-    const signal = controller.signal;
-    fetch("https://dummyjson.com/posts", { signal })
-      .then((res) => res.json())
-      .then((obj) => {
-        addFecthPosts(obj.posts);
-        setLoading(false);
-      });
-    return () => {
-      console.log("clean up function for fetching data from server");
-      controller.abort();
-    };
-  }, []);
+
   return (
     <>
       <storeItems.Provider
@@ -70,7 +54,6 @@ function postListDataStore({ children }) {
           postListData,
           addPost,
           deletePost,
-          loading,
         }}
       >
         {children}

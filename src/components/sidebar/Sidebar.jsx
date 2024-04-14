@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom";
 import styles from "../sidebar/Sidebar.module.css";
+import { useState } from "react";
 
-function Sidebar({ selectedTab, setSelectedTab }) {
+function Sidebar() {
+  const [selectedTab, setSelectedTab] = useState("home");
   return (
     <>
       <div
@@ -19,8 +22,8 @@ function Sidebar({ selectedTab, setSelectedTab }) {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item" onClick={() => setSelectedTab("home")}>
-            <a
-              href="#"
+            <Link
+              to="/"
               className={`nav-link  text-white ${
                 selectedTab === "home" && "active"
               }`}
@@ -30,11 +33,11 @@ function Sidebar({ selectedTab, setSelectedTab }) {
                 <use xlinkHref="#home" />
               </svg>
               Home
-            </a>
+            </Link>
           </li>
           <li onClick={() => setSelectedTab("create post")}>
-            <a
-              href="#"
+            <Link
+              to="/create-post"
               className={`nav-link  text-white ${
                 selectedTab === "create post" && "active"
               }`}
@@ -43,7 +46,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
                 <use xlinkHref="#speedometer2" />
               </svg>
               Create Post
-            </a>
+            </Link>
           </li>
           <hr />
         </ul>
